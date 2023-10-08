@@ -43,12 +43,12 @@ class DocScannerWindow(object):
         self.image_tmp = ImageTk.PhotoImage(self.image)
 
         # init four corners of the document
-        frame = tkinter.Frame(self.master)
-        sv = tkinter.Scrollbar(frame)  # 定义垂直滚动条
+        self.frame = tkinter.Frame(self.master)
+        sv = tkinter.Scrollbar(self.frame)  # 定义垂直滚动条
         sv.pack(side="right", fill='y')  # 放置垂直滚动条在最右侧,占满Y轴
-        sv2 = tkinter.Scrollbar(frame,orient='horizontal')  # 定义水平滚动条
+        sv2 = tkinter.Scrollbar(self.frame,orient='horizontal')  # 定义水平滚动条
         sv2.pack(side="bottom", fill='x')  # 放置水平滚动条在最右侧,占满Y轴
-        self.canvas = tkinter.Canvas(frame,
+        self.canvas = tkinter.Canvas(self.frame,
                 width=self.master.winfo_screenwidth(),
                 height=self.master.winfo_screenheight(),
                 bd=0, highlightthickness=0,xscrollincrement=100,yscrollincrement=100)
@@ -59,7 +59,7 @@ class DocScannerWindow(object):
         sv.config(command=self.canvas.yview)  # 设置垂直滚动条的函数与画布的Y轴滚动条事件绑定
         sv2.config(command=self.canvas.xview)  # 设置垂直滚动条的函数与画布的x轴滚动条事件绑定
         self.canvas.pack()
-        frame.pack()
+        self.frame.pack()
         self.canvas.config(yscrollincrement=1,xscrollincrement=1)  # 设置滚动条的步长
         self.canvas.bind("<MouseWheel>", self.event1)  # 添加滚轮事件
 
@@ -157,9 +157,10 @@ class DocScannerWindow(object):
     def update(self):  
         image_w = self.image.size[0]
         image_h = self.image.size[1]
+
         self.canvas.config(scrollregion=(0, 0, image_w, image_h))  # 设置画布可以滚动的范围
         
-        self.master.geometry('{}x{}'.format(image_w, image_h))
+        self.master.geometry('{}x{}'.format(image_w, image_h) )
 
         self.image_tmp = ImageTk.PhotoImage(self.image)
         self.canvas.itemconfig(self.image_on_canvas, image=self.image_tmp)
